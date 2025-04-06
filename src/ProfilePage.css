@@ -1,0 +1,72 @@
+/* ProfilePage.css */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.profile-image {
+    width: 200px; /* Cambia el tamaño según sea necesario */
+    height: 200px; /* Cambia el tamaño según sea necesario */
+    border-radius: 50%; /* Esto hace que la imagen sea redonda */
+    object-fit: cover; /* Esto asegura que la imagen se ajuste correctamente */
+    border: 2px solid white; /* Borde blanco */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    margin: auto; /* Centra la imagen */
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.min-h-screen {
+    min-height: 100vh; /* Asegúrate de que el contenedor principal ocupe toda la pantalla */
+}
+.bg-cover {
+    background-size: cover; /* Cambia esto a cover para que cubra todo sin repetirse */
+}
+
+.bg-no-repeat {
+    background-repeat: no-repeat; /* Asegúrate de que no se repita la imagen */
+}
+
+/* ProfilePage.css */
+
+.profile-description {
+    color: white; /* Color blanco */
+    font-weight: bold; /* Negrita */
+}
+
+.profile-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centro horizontalmente los elementos */
+    text-align: center; /* Centro el texto dentro de su contenedor */
+    margin-top: 20px; /* Espacio superior para separación */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 10px; /* Bordes redondeados */
+    max-width: 370px; /* Establecer un ancho máximo para limitar el tamaño del texto */
+    margin-left: auto; /* Centrar horizontalmente el contenedor */
+    margin-right: auto; /* Centrar horizontalmente el contenedor */
+}
+
+/* ProfilePage.css */
+
+/* Clase para el contenedor del texto del perfil */
+.profile-title {
+    color: rgba(255, 255, 255, 0.7);
+
+}
+
+.profile-name {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 40px;
+    margin-top: -20px; /* Puedes ajustar este valor según lo que necesites */
+
+
+}
