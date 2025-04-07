@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import logo from "./images/logo-slin_d2a50cf4d3.png";
 import background from "./images/slin-background.jpg";
-import './ProfilePage.css'; // Asegúrate de que la ruta sea correcta
-// import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
+import './ProfilePage.css'; 
+import { QRCodeCanvas } from 'qrcode.react';
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -13,7 +13,7 @@ const ProfilePage = () => {
   const [error, setError] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showQR, setShowQR] = useState(false);
-  const profileUrl = `http://localhost:3000/profile/${id}`;
+  const [profileUrl, setProfileUrl] = useState(""); // Estado para almacenar la URL del perfil
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -22,7 +22,10 @@ const ProfilePage = () => {
         if (!response.ok) throw new Error("Perfil no encontrado");
 
         const data = await response.json();
+        console.log("ProfileUrl:", data.profileUrl); 
         setProfile(data);
+        setProfileUrl(data.profileUrl); // Almacena la URL del perfil
+
       } catch (err) {
         setError(err.message);
       } finally {
@@ -72,24 +75,20 @@ const ProfilePage = () => {
             <h2 className="text-lg text-gray-200 profile-name">{profile?.name}</h2>
             <h3 className="text-lg text-gray-300 profile-title">{profile?.position}</h3>
             <p className="profile-description mt-2">{profile?.description}</p>
-            <button onClick={() => setShowQR(true)}
-                  className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white">
-            Mostrar QR
-          </button>
           </div>
+
+           {/* Muestra el código QR directamente aquí */}
+        {profileUrl && (
+          <div className="qr-container">
+            <QRCodeCanvas value={profileUrl} size={100} className="qr-code" /> {/* Ajusta el tamaño aquí */}
+            <p className="text-white mt-4">Escanea el código QR para acceder al perfil.</p>
+          </div>
+        )}
         </section>
+
+       
       </main>
 
-      {/* Modal QR */}
-      {showQR && (
-        <div className="fixed inset-0 w-screen h-screen bg-black bg-opacity-75 flex justify-center items-center">
-          <button onClick={() => setShowQR(false)} className="absolute top-4 right-4 text-white text-4xl">
-            ✖
-          </button>
-          {/* <QRCodeCanvas value={profileUrl} size={256} /> */}
-          <p className="text-white mt-4">Escanea el código QR para acceder al perfil.</p>
-        </div>
-      )}
       
     </div>
     

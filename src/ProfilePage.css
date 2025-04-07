@@ -67,6 +67,17 @@ html {
     color: rgba(255, 255, 255, 0.7);
     font-size: 40px;
     margin-top: -20px; /* Puedes ajustar este valor según lo que necesites */
+}
 
-
+.qr-code {
+    width: 150px; /* Ajusta el tamaño del código QR */
+    height: 150px; /* Ajusta el tamaño del código QR */
+}
+.qr-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el QR horizontalmente */
+    justify-content: center; /* Centra el QR verticalmente */
+    margin-top: -10px; /* Espacio superior */
+    height: 100%; /* Asegúrate de que el contenedor ocupe toda la altura disponible */
 }
