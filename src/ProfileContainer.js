@@ -8,9 +8,14 @@ const ProfileContainer = () => {
   const handleFormSubmit = async (formData) => {
     const formDataToSend = new FormData();
     formDataToSend.append("id", 0); // ID se genera en el backend
-    formDataToSend.append("name", formData.nombre);
-    formDataToSend.append("position", formData.posicion);
-    formDataToSend.append("description", formData.descripcion);
+    formDataToSend.append("Name", formData.nombre); // Cambiado a "Name"
+    formDataToSend.append("Position", formData.posicion); // Cambiado a "Position"
+    formDataToSend.append("Description", formData.descripcion); // Cambiado a "Description"
+    formDataToSend.append("WebsiteUrl", formData.websiteUrl); // Agregado
+    formDataToSend.append("LinkedInUrl", formData.linkedInUrl); // Agregado
+    formDataToSend.append("FacebookUrl", formData.facebookUrl); // Agregado
+    formDataToSend.append("PhoneNumber", formData.phoneNumber); // Agregado
+    formDataToSend.append("Email", formData.email); // Agregado
     
     // Verificamos si hay una imagen seleccionada antes de agregarla
     if (formData.imagen instanceof File) {

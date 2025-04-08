@@ -6,6 +6,11 @@ const ProfileForm = ({ onSubmit }) => {
     posicion: "",
     descripcion: "",
     imagen: null,
+    websiteUrl: "",
+    linkedInUrl: "",
+    facebookUrl: "",
+    phoneNumber: "",
+    email: "",
   });
 
   const handleChange = (e) => {
@@ -13,14 +18,14 @@ const ProfileForm = ({ onSubmit }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // Manejar la selección de la imagen
   const handleImageChange = (e) => {
     setFormData({ ...formData, imagen: e.target.files[0] });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData); // Ahora enviamos solo el objeto formData normal
+    console.log(formData); 
+    onSubmit(formData); 
   };
   
 
@@ -43,6 +48,57 @@ const ProfileForm = ({ onSubmit }) => {
         <div className="mb-3">
           <label className="form-label">Seleccionar Imagen</label>
           <input type="file" className="form-control" accept="image/*" onChange={handleImageChange} />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Website URL</label>
+          <input
+            type="url"
+            className="form-control"
+            name="websiteUrl"
+            value={formData.websiteUrl}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">LinkedIn URL</label>
+          <input
+            type="url"
+            className="form-control"
+            name="linkedInUrl"
+            value={formData.linkedInUrl}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Facebook URL</label>
+          <input
+            type="url"
+            className="form-control"
+            name="facebookUrl"
+            value={formData.facebookUrl}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Número de Teléfono</label>
+          <input
+            type="tel"
+            className="form-control"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Email</label>
+          <input
+            type="email"
+            className="form-control"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
         </div>
         <button type="submit" className="btn btn-primary">Guardar</button>
       </form>

@@ -13,7 +13,7 @@ const ProfilePage = () => {
   const [error, setError] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showQR, setShowQR] = useState(false);
-  const [profileUrl, setProfileUrl] = useState(""); // Estado para almacenar la URL del perfil
+  const [profileUrl, setProfileUrl] = useState(""); 
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -22,9 +22,9 @@ const ProfilePage = () => {
         if (!response.ok) throw new Error("Perfil no encontrado");
 
         const data = await response.json();
-        console.log("ProfileUrl:", data.profileUrl); 
+        console.log("ProfileUrl:", data); 
         setProfile(data);
-        setProfileUrl(data.profileUrl); // Almacena la URL del perfil
+        setProfileUrl(data.profileUrl); 
 
       } catch (err) {
         setError(err.message);
@@ -38,6 +38,53 @@ const ProfilePage = () => {
 
   if (loading) return <p className="text-center text-black mt-10">Cargando...</p>;
   if (error) return <p className="text-center text-red-500 mt-10">{error}</p>;
+
+  const handleShare = () => {
+    const phoneNumber = profile.phoneNumber;
+    if (phoneNumber) {
+      const whatsappLink = `https://wa.me/${phoneNumber}`;
+      window.open(whatsappLink, '_blank');
+    }
+  };
+
+  const handleAddContact = () => {
+    if (!profile) return;
+  
+    const vcfContent = `
+  BEGIN:VCARD
+  VERSION:3.0
+  N:${profile.name}
+  TEL;TYPE=CELL:${profile.phoneNumber}
+  EMAIL:${profile.email}
+  URL:${profile.websiteUrl}
+  ORG:${profile.position}
+  END:VCARD
+    `.trim();
+  
+    const blob = new Blob([vcfContent], { type: "text/vcard" });
+    const url = URL.createObjectURL(blob);
+  
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${profile.name.replace(/\s+/g, '_')}_contact.vcf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+  
+  const handleCopyLink = () => {
+    const currentUrl = window.location.href;  
+    navigator.clipboard.writeText(currentUrl)
+      .then(() => {
+        alert("¡URL copiada al portapapeles!");
+      })
+      .catch((err) => {
+        console.error("Error al copiar la URL: ", err);
+        alert("Hubo un error al copiar la URL.");
+      });
+  };
+  
 
   return (
     <div
@@ -55,39 +102,47 @@ const ProfilePage = () => {
       </Helmet>
 
       {/* Menú Superior */}
-      <nav className="container mx-auto flex items-center justify-between h-16 px-4 md:px-0">
-        <img className="h-10" src={logo} alt="Logo" />
-        <div className={`absolute md:static top-16 right-0 bg-gray-800 w-full md:w-auto md:flex flex-col md:flex-row items-center z-40 ${menuOpen ? "flex" : "hidden"}`}>
-          {/* Opciones de menú si se agregan */}
-        </div>
+      <nav className="menu-superior flex items-center justify-between h-16 px-4 w-full">
+      <img className="h-10" src={logo} alt="Logo" />
+      <div class="menu">
+      <button className="btn" onClick={handleCopyLink}>Link</button>
+      <button class="btn">Instalar</button>
+    <button className="btn" onClick={handleAddContact}>Agregar</button>
+    <button className="btn" onClick={handleShare}>Compartir</button>
+    </div>
       </nav>
 
       
       {/* Perfil */}
       <main className="flex-1 flex flex-col items-center justify-center p-6">
-        <section className="max-w-sm w-full bg-gray-800 bg-opacity-90 rounded-lg p-6 shadow-lg text-center">
-          <img
-            className="profile-image"
-            src={profile?.imageUrl || "/default-profile.png"}
-            alt={profile?.name || "Usuario"}
-          />
-          <div className="profile-text">
-            <h2 className="text-lg text-gray-200 profile-name">{profile?.name}</h2>
-            <h3 className="text-lg text-gray-300 profile-title">{profile?.position}</h3>
-            <p className="profile-description mt-2">{profile?.description}</p>
-          </div>
+  <section className="max-w-sm w-full bg-gray-800 bg-opacity-90 rounded-lg p-6 shadow-lg text-center">
+    <img
+      className="profile-image"
+      src={profile?.imageUrl || "/default-profile.png"}
+      alt={profile?.name || "Usuario"}
+    />
+    <div className="profile-text">
+      <h2 className="text-lg text-gray-200 profile-name">{profile?.name}</h2>
+      <h3 className="text-lg text-gray-300 profile-title">{profile?.position}</h3>
+      <p className="profile-description mt-2">{profile?.description}</p>
 
-           {/* Muestra el código QR directamente aquí */}
-        {profileUrl && (
-          <div className="qr-container">
-            <QRCodeCanvas value={profileUrl} size={100} className="qr-code" /> {/* Ajusta el tamaño aquí */}
-            <p className="text-white mt-4">Escanea el código QR para acceder al perfil.</p>
-          </div>
-        )}
-        </section>
+      {/* Botones debajo de la descripción */}
+      <div className="button-container mt-0">
+        <a href={profile?.websiteUrl} className="button" target="_blank" rel="noopener noreferrer">Pagina Web</a>
+        <a href={profile?.linkedInUrl} className="button" target="_blank" rel="noopener noreferrer">Linkedin Slin</a>
+        <a href={profile?.facebookUrl} className="button" target="_blank" rel="noopener noreferrer">Facebook</a>
+      </div>
 
-       
-      </main>
+      {/* Muestra el código QR directamente aquí */}
+      {profileUrl && (
+        <div className="qr-container">
+          <QRCodeCanvas value={profileUrl} size={100} className="qr-code" />
+          <p className="text-white mt-4">Escanea el código QR para acceder al perfil.</p>
+        </div>
+      )}
+    </div>
+  </section>
+</main>
 
       
     </div>
