@@ -5,6 +5,12 @@ import logo from "./images/logo-slin_d2a50cf4d3.png";
 import background from "./images/slin-background.jpg";
 import './ProfilePage.css'; 
 import { QRCodeCanvas } from 'qrcode.react';
+import { FiLink, FiDownload, FiUserPlus, FiShare2 } from "react-icons/fi";
+import { FiPhone, FiMessageCircle } from "react-icons/fi";
+import { FaLinkedin, FaWhatsapp } from "react-icons/fa";
+import { FiMail } from 'react-icons/fi';
+
+
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -124,6 +130,55 @@ const ProfilePage = () => {
     <div className="profile-text">
       <h2 className="text-lg text-gray-200 profile-name">{profile?.name}</h2>
       <h3 className="text-lg text-gray-300 profile-title">{profile?.position}</h3>
+      {/* Íconos debajo del cargo */}
+      <div className="flex justify-center items-center mt-4" style={{ gap: '20px' }}>
+      {profile?.linkedInUrl && (
+        <a
+          href={profile.linkedInUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="LinkedIn"
+          className="text-white text-3xl hover:text-blue-400 transition"
+        >
+          <FaLinkedin />
+        </a>
+      )}
+  
+  {profile?.email  && (
+    <a
+      href={`mailto:${profile.email}`}
+      title="Mensaje de texto"
+      className="text-white text-3xl hover:text-yellow-300 transition"
+    >
+      <FiMail  />
+    </a>
+  )}
+ {profile?.phoneNumber && (
+    <a
+      href={`tel:${profile.phoneNumber}`}
+      title="Llamar"
+      className="text-white text-3xl hover:text-green-400 transition"
+    >
+      <FiPhone />
+    </a>
+  )}
+
+{profile?.phoneNumber && (
+    <a
+      href={`https://wa.me/${profile.phoneNumber}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      title="WhatsApp"
+      className="text-white text-3xl hover:text-green-500 transition"
+    >
+      <FaWhatsapp />
+    </a>
+  )}
+</div>
+
+
+
+
       <p className="profile-description mt-2">{profile?.description}</p>
 
       {/* Botones debajo de la descripción */}

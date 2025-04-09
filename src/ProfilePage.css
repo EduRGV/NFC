@@ -1,4 +1,3 @@
-/* ProfilePage.css */
 body,
 html {
     margin: 0;
@@ -7,13 +6,14 @@ html {
 }
 
 .profile-image {
-    width: 200px; /* Cambia el tamaño según sea necesario */
-    height: 200px; /* Cambia el tamaño según sea necesario */
-    border-radius: 50%; /* Esto hace que la imagen sea redonda */
-    object-fit: cover; /* Esto asegura que la imagen se ajuste correctamente */
-    border: 2px solid white; /* Borde blanco */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
-    margin: auto; /* Centra la imagen */
+    width: 200px; 
+    height: 200px; 
+    border-radius: 50%;
+    object-fit: cover; 
+    border: 2px solid white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: auto; 
+    margin-bottom: -30px;
 }
 
 .flex {
@@ -25,53 +25,57 @@ html {
 }
 
 .min-h-screen {
-    min-height: 100vh; /* Asegúrate de que el contenedor principal ocupe toda la pantalla */
+    min-height: 100vh; 
 }
 .bg-cover {
-    background-size: cover; /* Cambia esto a cover para que cubra todo sin repetirse */
+    background-size: cover;
 }
 
 .bg-no-repeat {
-    background-repeat: no-repeat; /* Asegúrate de que no se repita la imagen */
+    background-repeat: no-repeat; 
 }
 
-/* ProfilePage.css */
+
 
 .profile-description {
-    color: white; /* Color blanco */
-    font-weight: bold; /* Negrita */
+    color: white; 
+    font-weight: bold;
 }
 
 .profile-text {
 
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centro horizontalmente los elementos */
-    text-align: center; /* Centro el texto dentro de su contenedor */
-    margin-top: 20px; /* Espacio superior para separación */
-    padding: 20px; /* Espaciado interno */
-    border-radius: 10px; /* Bordes redondeados */
-    max-width: 370px; /* Establecer un ancho máximo para limitar el tamaño del texto */
-    margin-left: auto; /* Centrar horizontalmente el contenedor */
-    margin-right: auto; /* Centrar horizontalmente el contenedor */
+    align-items: center; 
+    text-align: center; 
+    margin-top: 20px; 
+    padding: 20px; 
+    border-radius: 10px; 
+    max-width: 370px; 
+    margin-left: auto; 
+    margin-right: auto; 
 }
 
-/* ProfilePage.css */
 
-/* Clase para el contenedor del texto del perfil */
 .profile-title {
     color: white;
+    margin-bottom: -8px; 
 
 }
 
 .menu-superior {
-    background-color: white; /* Color de fondo blanco */
-    width: 100%; /* Asegúrate de que el menú ocupe todo el ancho */
-    padding: 0 20px; /* Espaciado interno */
-    top: 0; /* Coloca el menú en la parte superior */
-    left: 0; /* Asegúrate de que esté alineado a la izquierda */
+    background-color: white; 
+    width: 100%; 
+    padding: 0 20px; 
+    top: 0; 
+    left: 0; 
     margin-bottom: 30px;
 }
+a {
+    color: blue;
+    font-size: 25px;
+  }
+  
 
 .botones {
     display: flex;
@@ -79,29 +83,29 @@ html {
   }
   
   .btn {
-    background-color: blue; /* Fondo azul */
-    color: white; /* Letras blancas */
-    border: none; /* Sin borde */
-    border-radius: 15px; /* Esquinas redondeadas */
-    padding: 10px 15px; /* Espaciado interno */
-    margin-left: 10px; /* Espacio entre botones */
-    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-    transition: background-color 0.3s; /* Efecto de transición */
+    background-color: blue; 
+    color: white;
+    border: none; 
+    border-radius: 15px; 
+    padding: 10px 15px; 
+    margin-left: 10px; 
+    cursor: pointer;
+    transition: background-color 0.3s; 
 }
 
 .btn:hover {
-    background-color: darkblue; /* Color de fondo más oscuro al pasar el cursor */
+    background-color: darkblue; 
 }
 
 .menu {
     display: flex;
-    justify-content: flex-end; /* Alinea los botones a la derecha */
-    margin: 10px; /* Espacio alrededor del menú */
-    flex-grow: 1; /* Permite que el menú use el espacio disponible */
+    justify-content: flex-end; 
+    margin: 10px; 
+    flex-grow: 1; 
 }
   
 .btn:hover {
-    background-color: darkblue; /* Color de fondo más oscuro al pasar el cursor */
+    background-color: darkblue; 
 }
 
 .profile-name {
@@ -110,42 +114,43 @@ html {
 }
 
 .qr-code {
-    width: 150px; /* Ajusta el tamaño del código QR */
-    height: 150px; /* Ajusta el tamaño del código QR */
+    width: 150px; 
+    height: 150px; 
 }
 .qr-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centra el QR horizontalmente */
-    justify-content: center; /* Centra el QR verticalmente */
-    margin-top: 10px; /* Espacio superior */
-    height: 100%; /* Asegúrate de que el contenedor ocupe toda la altura disponible */
+    align-items: center; 
+    justify-content: center;
+    margin-top: 10px; 
+    height: 100%; 
 }
 
 .button-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centra los botones horizontalmente */
+    align-items: center; 
 }
 
-/* Estilo para los botones */
+
 .button {
-    background-color: #1f458f; /* Color de fondo azul */
-    color: white; /* Color del texto */
-    padding: 10px 20px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados */
-    text-decoration: none; /* Sin subrayado */
-    margin: 2px 0; /* Espaciado entre botones */
-    transition: background-color 0.3s; /* Transición suave para el estado hover */
-    width: 240%;
+    background-color: #1f458f; 
+    color: white; 
+    padding: 10px 20px; 
+    border-radius: 5px;
+    text-decoration: none; 
+    margin: 2px 0; 
+    transition: background-color 0.3s; 
+    width: 200%;
+    font-size: 20px; 
 }
 
-/* Efecto hover para los botones */
+
 .button:hover {
-    background-color: #1f458f; /* Fondo más claro al pasar el mouse */
+    background-color: #1f458f; 
 }
 .container {
     width: 100%;
-    margin: 0; /* Elimina el margen para que ocupe todo el ancho */
-    padding: 0; /* Elimina el relleno si no es necesario */
+    margin: 0; 
+    padding: 0; 
 }
