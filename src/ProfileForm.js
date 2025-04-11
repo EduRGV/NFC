@@ -6,6 +6,8 @@ const ProfileForm = ({ onSubmit }) => {
     posicion: "",
     descripcion: "",
     imagen: null,
+    backgroundImage: null,
+    backgroundImagePreview: null,
     websiteUrl: "",
     linkedInUrl: "",
     facebookUrl: "",
@@ -22,12 +24,28 @@ const ProfileForm = ({ onSubmit }) => {
     setFormData({ ...formData, imagen: e.target.files[0] });
   };
 
+  const handleBackgroundImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prevData) => ({
+          ...prevData,
+          backgroundImage: file,
+          backgroundImagePreview: reader.result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setFormData({ ...formData, backgroundImage: null, backgroundImagePreview: null });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData); 
     onSubmit(formData); 
   };
-  
 
   return (
     <div className="container mt-4">
@@ -46,65 +64,49 @@ const ProfileForm = ({ onSubmit }) => {
           <textarea className="form-control" name="descripcion" value={formData.descripcion} onChange={handleChange} required />
         </div>
         <div className="mb-3">
-          <label className="form-label">Seleccionar Imagen</label>
+          <label className="form-label">Seleccionar Imagen de Perfil</label>
           <input type="file" className="form-control" accept="image/*" onChange={handleImageChange} />
         </div>
         <div className="mb-3">
+          <label className="form-label">Imagen de Fondo</label>
+          <input type="file" className="form-control" accept="image/*" onChange={handleBackgroundImageChange} />
+        </div>
+
+        {formData.backgroundImagePreview && (
+          <div className="mb-3">
+            <label className="form-label">Vista previa del fondo:</label><br />
+            <img
+              src={formData.backgroundImagePreview}
+              alt="Background Preview"
+              style={{ width: '100%', maxHeight: '200px', objectFit: 'cover', borderRadius: '5px' }}
+            />
+          </div>
+        )}
+
+        <div className="mb-3">
           <label className="form-label">Website URL</label>
-          <input
-            type="url"
-            className="form-control"
-            name="websiteUrl"
-            value={formData.websiteUrl}
-            onChange={handleChange}
-          />
+          <input type="url" className="form-control" name="websiteUrl" value={formData.websiteUrl} onChange={handleChange} />
         </div>
         <div className="mb-3">
           <label className="form-label">LinkedIn URL</label>
-          <input
-            type="url"
-            className="form-control"
-            name="linkedInUrl"
-            value={formData.linkedInUrl}
-            onChange={handleChange}
-          />
+          <input type="url" className="form-control" name="linkedInUrl" value={formData.linkedInUrl} onChange={handleChange} />
         </div>
         <div className="mb-3">
           <label className="form-label">Facebook URL</label>
-          <input
-            type="url"
-            className="form-control"
-            name="facebookUrl"
-            value={formData.facebookUrl}
-            onChange={handleChange}
-          />
+          <input type="url" className="form-control" name="facebookUrl" value={formData.facebookUrl} onChange={handleChange} />
         </div>
         <div className="mb-3">
           <label className="form-label">Número de Teléfono</label>
-          <input
-            type="tel"
-            className="form-control"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-          />
+          <input type="tel" className="form-control" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
         </div>
         <div className="mb-3">
           <label className="form-label">Email</label>
-          <input
-            type="email"
-            className="form-control"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+          <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} required />
         </div>
         <button type="submit" className="btn btn-primary">Guardar</button>
       </form>
     </div>
   );
 };
-
 
 export default ProfileForm;

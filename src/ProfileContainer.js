@@ -18,9 +18,17 @@ const ProfileContainer = () => {
     formDataToSend.append("Email", formData.email); 
     
 
+    
+
     if (formData.imagen instanceof File) {
         console.log("📂 Imagen detectada:", formData.imagen.name);
       formDataToSend.append("imageFile", formData.imagen); 
+    }else {
+        console.warn("⚠️ No se ha seleccionado una imagen o no es un archivo válido.");
+      }
+      if (formData.backgroundImage instanceof File) {
+        console.log("📂 Imagen detectada:", formData.backgroundImage.name);
+      formDataToSend.append("backgroundFile", formData.backgroundImage); 
     }else {
         console.warn("⚠️ No se ha seleccionado una imagen o no es un archivo válido.");
       }

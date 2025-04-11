@@ -20,6 +20,7 @@ const ProfilePage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [profileUrl, setProfileUrl] = useState(""); 
+  const [backgroundUrl, setBackgroundUrl] = useState("");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -31,7 +32,7 @@ const ProfilePage = () => {
         console.log("ProfileUrl:", data); 
         setProfile(data);
         setProfileUrl(data.profileUrl); 
-
+        setBackgroundUrl(data.background);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -94,8 +95,14 @@ const ProfilePage = () => {
 
   return (
     <div
-    className="flex flex-col min-h-screen bg-cover bg-center bg-no-repeat text-black"
-    style={{ backgroundImage: `url(${background})`, minHeight: '100vh' }} // Asegúrate que el fondo ocupe toda la altura
+    style={{
+      backgroundImage: `url(${backgroundUrl || background})`,
+      backgroundSize: "contain",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      minHeight: "100vh"
+    }}
+    
 >
       {/* Meta datos */}
       <Helmet>
