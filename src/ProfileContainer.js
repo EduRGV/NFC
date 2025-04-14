@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileForm from "./ProfileForm";
+const baseUrl = process.env.REACT_APP_API_URL;
 
 const ProfileContainer = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const ProfileContainer = () => {
       }
 
     try {
-      const response = await fetch("https://localhost:7059/api/Profile", {
+      const response = await fetch(`${baseUrl}/Profile`, {
         method: "POST",
         body: formDataToSend, 
       });

@@ -10,6 +10,7 @@ import { FiPhone, FiMessageCircle } from "react-icons/fi";
 import { FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { FiMail } from 'react-icons/fi';
 
+const baseUrl = process.env.REACT_APP_API_URL;
 
 
 const ProfilePage = () => {
@@ -25,7 +26,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch(`https://localhost:7059/api/Profile/${id}`);
+        const response = await fetch(`${baseUrl}/Profile/${id}`);
         if (!response.ok) throw new Error("Perfil no encontrado");
 
         const data = await response.json();
