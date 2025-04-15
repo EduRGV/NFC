@@ -16,10 +16,13 @@ const App = () => {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        <Route path="/profile/:id" element={<ProfilePage />} />
+
         {/* Rutas con Sidebar */}
+
         <Route element={<Layout />}>
           <Route path="/profile" element={<ProfileContainer />} />
-          <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/listar" element={<ListingPage />} />
         </Route>
       </Routes>
