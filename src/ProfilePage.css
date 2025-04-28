@@ -1,19 +1,34 @@
-body,
-html {
+body, html {
     margin: 0;
     padding: 0;
     height: 100%;
+    font-family: sans-serif;
+}
+
+.card {
+    background: rgba(0, 0, 50, 0.5); /* fondo azul oscuro semitransparente */
+    border-radius: 15px;
+    padding: 20px;
+    max-width: 400px;
+    margin: 80px auto 20px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .profile-image {
-    width: 200px; 
-    height: 200px; 
+    width: 40vw;
+    max-width: 200px;
+    height: 40vw;
+    max-height: 200px;
     border-radius: 50%;
-    object-fit: cover; 
-    border: 2px solid white; 
+    object-fit: cover;
+    border: 2px solid white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin: auto; 
-    margin-bottom: -30px;
+    margin: auto;
+    margin-bottom: -20px;
 }
 
 .flex {
@@ -25,132 +40,259 @@ html {
 }
 
 .min-h-screen {
-    min-height: 100vh; 
+    min-height: 100vh;
 }
+
 .bg-cover {
     background-size: cover;
 }
 
 .bg-no-repeat {
-    background-repeat: no-repeat; 
+    background-repeat: no-repeat;
 }
 
-
-
 .profile-description {
-    color: white; 
+    color: white;
     font-weight: bold;
+    text-align: center;
+    max-width: 380px; /* 💥 límite de ancho */
+    margin: 0 auto;   /* 💥 para centrar horizontalmente */
+    padding: 0 20px;  /* 💥 espacio a los costados */
+    word-wrap: break-word; /* 💥 forzar que corte la línea si es necesario */
+}
+
+.form-control {
+    width: 100%; /* Asegurarse de que los inputs ocupen el 100% del ancho */
+    box-sizing: border-box; /* Asegurarse de que el padding no afecte el ancho total */
 }
 
 .profile-text {
-
     display: flex;
     flex-direction: column;
-    align-items: center; 
-    text-align: center; 
-    margin-top: 20px; 
-    padding: 20px; 
-    border-radius: 10px; 
-    max-width: 370px; 
-    margin-left: auto; 
-    margin-right: auto; 
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
 }
-
 
 .profile-title {
     color: white;
-    margin-bottom: -8px; 
-
+    margin-bottom: -8px;
 }
 
 .menu-superior {
-    background-color: white; 
-    width: 100%; 
-    padding: 0 20px; 
-    top: 0; 
-    left: 0; 
+    background-color: white;
+    width: 100%;
+    padding: 0 20px;
+    top: 0;
+    left: 0;
     margin-bottom: 30px;
-}
-a {
-    color: blue;
-    font-size: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   
+
+a {
+    color: blue;
+    font-size: 1.2rem;
+}
 
 .botones {
     display: flex;
     gap: 10px;
-  }
-  
-  .btn {
-    background-color: blue; 
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn {
+    background-color: blue;
     color: white;
-    border: none; 
-    border-radius: 15px; 
-    padding: 10px 15px; 
-    margin-left: 10px; 
+    border: none;
+    border-radius: 15px;
+    padding: 10px 15px;
     cursor: pointer;
-    transition: background-color 0.3s; 
+    transition: background-color 0.3s;
+    
 }
 
 .btn:hover {
-    background-color: darkblue; 
+    background-color: darkblue;
 }
 
 .menu {
     display: flex;
-    justify-content: flex-end; 
-    margin: 10px; 
-    flex-grow: 1; 
-}
-  
-.btn:hover {
-    background-color: darkblue; 
-}
+    justify-content: flex-end;
+    gap: 15px;
+  }
 
 .profile-name {
     color: white;
-
+    text-align: center;
 }
 
 .qr-code {
-    width: 150px; 
-    height: 150px; 
+    width: 120px;
+    height: 120px;
 }
+
 .qr-container {
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
-    margin-top: 10px; 
-    height: 100%; 
+    margin-top: 10px;
+    height: 100%;
 }
 
 .button-container {
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
+    max-width: 500px;
 }
-
 
 .button {
-    background-color: #1f458f; 
-    color: white; 
-    padding: 10px 20px; 
+    background-color: #1f458f;
+    color: white;
+    padding: 10px 20px;
     border-radius: 5px;
-    text-decoration: none; 
-    margin: 2px 0; 
-    transition: background-color 0.3s; 
-    width: 200%;
-    font-size: 20px; 
+    text-decoration: none;
+    margin: 2px 0;
+    transition: background-color 0.3s;
+    width: 100%;
+    max-width: 300px;
+    font-size: 1.1rem;
+    text-align: center;
 }
-
 
 .button:hover {
-    background-color: #1f458f; 
+    background-color: #173675;
 }
+
 .container {
     width: 100%;
-    margin: 0; 
-    padding: 0; 
+    padding: 20px; /* Agregar padding para evitar que el contenido toque los bordes */
+    box-sizing: border-box; /* Asegurarse de que el padding no afecte el ancho total */
+}
+
+.menu-hamburguesa {
+    display: none; /* Ocultamos el menú por defecto */
+}
+.menu-hamburguesa.open {
+    display: flex; /* Mostramos el menú cuando está abierto */
+}
+
+.menu-hamburguesa ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+    border-radius: 5px;
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    width: 200px;
+}
+.menu-hamburguesa button {
+    width: 100%;
+    color: black;  /* Color de texto */
+    padding: 10px;
+    border: none;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.menu-hamburguesa button:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el ratón */
+}
+
+.menu-hamburguesa li {
+    padding: 10px;
+    text-align: center;
+}
+
+.menu-hamburguesa a {
+    color: #000;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+/* 📱 Media Query para hacer todo responsive */
+@media (max-width: 768px) {
+    .menu {
+        display: none; /* Ocultamos los botones del menú en pantallas pequeñas */
+      }
+
+      .menu-hamburguesa {
+        display: block; /* Mostramos el botón hamburguesa */
+      }
+    
+      .menu-hamburguesa ul {
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 200px;
+      }
+    
+      .menu-hamburguesa ul li {
+        display: block;
+        text-align: center;
+      }
+    
+      .menu-hamburguesa ul li a {
+        color: white;
+        font-size: 1.1rem;
+        text-decoration: none;
+      }
+    
+      .menu-hamburguesa ul li a:hover {
+        background-color: #444;
+      }
+
+    .profile-image {
+        width: 80vw;
+        height: 80vw;
+    }
+
+    .profile-text {
+        padding: 10px;
+    }
+
+    .qr-code {
+        width: 100px;
+        height: 100px;
+    }
+
+    .botones {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    a {
+        font-size: 1rem;
+    }
 }

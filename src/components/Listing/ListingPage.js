@@ -1,9 +1,12 @@
 // src/components/Listing/ListingPage.js
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UserService } from '../../services/UserService';
 import { Modal, Button, Spinner, Alert } from 'react-bootstrap';
 import { ProfileService } from '../../services/ProfileServices';
+
 const ListingPage = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -133,8 +136,8 @@ const ListingPage = () => {
                   <Button
                     variant="primary"
                     size="sm"
-                    onClick={() => window.location.href = `http://localhost:3000/profile/${user.id}`}
-                  >
+                    onClick={() => navigate(`/profile/${user.id}`)}
+                    >
                     Ver perfil
                   </Button>
 

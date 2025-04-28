@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import styles from './Register.module.css';
 import { useNavigate } from 'react-router-dom';
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl =  "http://54.242.76.106:5000/api";
+// const baseUrl = process.env.REACT_APP_API_URL;
 
 const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
     passwordHash: '',
-    email: ''
+    email: '',
+    role: 'User'
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();

@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileForm from "./ProfileForm";
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl = "http://54.242.76.106:5000/api";
+// const baseUrl = process.env.REACT_APP_API_URL;
 
 const ProfileContainer = () => {
   const navigate = useNavigate();

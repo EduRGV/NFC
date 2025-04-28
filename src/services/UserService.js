@@ -1,4 +1,5 @@
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl = "http://54.242.76.106:5000/api";
+// const baseUrl = process.env.REACT_APP_API_URL;
 export const UserService = {
     async getUsers() {
       const response = await fetch(`${baseUrl}/User`);

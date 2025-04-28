@@ -10,7 +10,8 @@ import { FiPhone, FiMessageCircle } from "react-icons/fi";
 import { FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { FiMail } from 'react-icons/fi';
 
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl = "http://54.242.76.106:5000/api";
+// const baseUrl = process.env.REACT_APP_API_URL;
 
 
 const ProfilePage = () => {
@@ -47,6 +48,9 @@ const ProfilePage = () => {
   if (loading) return <p className="text-center text-black mt-10">Cargando...</p>;
   if (error) return <p className="text-center text-red-500 mt-10">{error}</p>;
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen); // Función para abrir/cerrar el menú en móvil
+  };
   const handleShare = () => {
     const phoneNumber = profile.phoneNumber;
     if (phoneNumber) {
@@ -115,15 +119,32 @@ const ProfilePage = () => {
         <meta property="og:type" content="profile" />
       </Helmet>
 
-      {/* Menú Superior */}
-      <nav className="menu-superior flex items-center justify-between h-16 px-4 w-full">
-      <img className="h-10" src={logo} alt="Logo" />
-      <div class="menu">
-      <button className="btn" onClick={handleCopyLink}>Link</button>
-      <button class="btn">Instalar</button>
-    <button className="btn" onClick={handleAddContact}>Agregar</button>
-    <button className="btn" onClick={handleShare}>Compartir</button>
-    </div>
+     {/* Menú Superior */}
+     <nav className="menu-superior flex items-center justify-between h-16 px-4 w-full">
+        <img className="h-10" src={logo} alt="Logo" />
+        
+        {/* Menú en dispositivos grandes */}
+        <div className="menu">
+          <button className="btn" onClick={handleCopyLink}>Link</button>
+          <button className="btn">Instalar</button>
+          <button className="btn" onClick={handleAddContact}>Agregar</button>
+          <button className="btn" onClick={handleShare}>Compartir</button>
+        </div>
+
+        {/* Menú Hamburguesa */}
+        <div className="menu-hamburguesa">
+          <button onClick={toggleMenu} className="btn">
+            ☰
+          </button>
+          {menuOpen && (
+            <ul>
+              <li><button className="btn" onClick={handleCopyLink}>Link</button></li>
+              <li><button className="btn">Instalar</button></li>
+              <li><button className="btn" onClick={handleAddContact}>Agregar</button></li>
+              <li><button className="btn" onClick={handleShare}>Compartir</button></li>
+            </ul>
+          )}
+        </div>
       </nav>
 
       
@@ -190,7 +211,7 @@ const ProfilePage = () => {
       <p className="profile-description mt-2">{profile?.description}</p>
 
       {/* Botones debajo de la descripción */}
-      <div className="button-container mt-0">
+      <div className="button-container mt-2">
         <a href={profile?.websiteUrl} className="button" target="_blank" rel="noopener noreferrer">Pagina Web</a>
         <a href={profile?.linkedInUrl} className="button" target="_blank" rel="noopener noreferrer">Linkedin Slin</a>
         <a href={profile?.facebookUrl} className="button" target="_blank" rel="noopener noreferrer">Facebook</a>
