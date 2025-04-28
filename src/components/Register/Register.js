@@ -22,25 +22,30 @@ const Register = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     setError('');
-
+    console.log('Enviando datos:', formData); // Antes de enviar
+  
     try {
       const response = await fetch(`${baseUrl}/User/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-
+  
+      console.log('Respuesta del servidor:', response);
+  
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.message || 'Error al registrar usuario');
       }
-
+  
       alert('Usuario registrado con éxito');
       navigate('/login');
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      console.error('Error al registrar:', error); // Error de red o ejecución
+      setError(error.message);
     }
   };
+  
 
   return (
     <div className={styles.registerContainer}>
