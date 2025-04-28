@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import logo from "./images/logo-slin_d2a50cf4d3.png";
 import background from "./images/slin-background.jpg";
-import './ProfilePage.css'; 
+import './ProfilePage.css';
 import { QRCodeCanvas } from 'qrcode.react';
 import { FiLink, FiDownload, FiUserPlus, FiShare2 } from "react-icons/fi";
 import { FiPhone, FiMessageCircle } from "react-icons/fi";
 import { FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { FiMail } from 'react-icons/fi';
+import QRCode from "qrcode"
+import { WalletService } from "./services/WalletServices";
 
 const baseUrl = "http://54.242.76.106:5000/api";
 // const baseUrl = process.env.REACT_APP_API_URL;
@@ -21,8 +23,25 @@ const ProfilePage = () => {
   const [error, setError] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showQR, setShowQR] = useState(false);
-  const [profileUrl, setProfileUrl] = useState(""); 
+  const [profileUrl, setProfileUrl] = useState("");
   const [backgroundUrl, setBackgroundUrl] = useState("");
+  const qrcodeCanvasRef = useRef(null);
+
+  const generateQRCode = () => {
+    if (!profile) return;
+
+    const vCard = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:SLIN\nTITLE:${profile.position}\nTEL:${profile.phoneNumber}\nEMAIL:${profile.email}\nURL:${profile.websiteUrl}\nURL:http://localhost:3000/profile/3\nEND:VCARD`;
+
+    const canvas = qrcodeCanvasRef.current;
+
+    QRCode.toCanvas(canvas, vCard, { errorCorrectionLevel: 'H' }, (error) => {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log('QR generado!');
+      }
+    });
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -31,9 +50,8 @@ const ProfilePage = () => {
         if (!response.ok) throw new Error("Perfil no encontrado");
 
         const data = await response.json();
-        console.log("ProfileUrl:", data); 
         setProfile(data);
-        setProfileUrl(data.profileUrl); 
+        setProfileUrl(data.profileUrl);
         setBackgroundUrl(data.background);
       } catch (err) {
         setError(err.message);
@@ -44,6 +62,15 @@ const ProfilePage = () => {
 
     fetchProfile();
   }, [id]);
+
+
+  useEffect(() => {
+    if (profile) {
+      generateQRCode();
+    }
+  }, [profile]);
+
+
 
   if (loading) return <p className="text-center text-black mt-10">Cargando...</p>;
   if (error) return <p className="text-center text-red-500 mt-10">{error}</p>;
@@ -59,34 +86,49 @@ const ProfilePage = () => {
     }
   };
 
-  const handleAddContact = () => {
-    if (!profile) return;
+  const addToGoogleWallet = async () => {
+    try {
+      let jwt = await WalletService.createGooglePass(profile); // ahora sí es el string correcto
+      console.log("jwt", jwt);
   
-    const vcfContent = `
-  BEGIN:VCARD
-  VERSION:3.0
-  N:${profile.name}
-  TEL;TYPE=CELL:${profile.phoneNumber}
-  EMAIL:${profile.email}
-  URL:${profile.websiteUrl}
-  ORG:${profile.position}
-  END:VCARD
-    `.trim();
-  
-    const blob = new Blob([vcfContent], { type: "text/vcard" });
-    const url = URL.createObjectURL(blob);
-  
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${profile.name.replace(/\s+/g, '_')}_contact.vcf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+      // Abre el link en una nueva pestaña
+      const link = document.createElement('a');
+      link.href = `${jwt}`;
+      link.target = '_blank';
+      link.click();
+    } catch (error) {
+      console.error('Error adding to Google Wallet:', error);
+    }
+  }
+
+
+  const addToAppleWallet = async () => {
+    let response = await WalletService.createApplePass(profile);
+
+    // Verifica que la respuesta sea correcta
+    if (response.ok) {
+      // Usa response.blob() para leer el cuerpo como un Blob
+      const blob = await response.blob();
+
+      // Ahora crea un enlace de descarga a partir del Blob
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "ApplePass.pkpass"; // Nombre del archivo a descargar
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a); // Limpia el DOM después de la descarga
+    } else {
+      console.error('Error al recibir el archivo');
+    }
   };
-  
+
+
+  const handleAddContact = () => {
+
+  };
   const handleCopyLink = () => {
-    const currentUrl = window.location.href;  
+    const currentUrl = window.location.href;
     navigator.clipboard.writeText(currentUrl)
       .then(() => {
         alert("¡URL copiada al portapapeles!");
@@ -96,19 +138,19 @@ const ProfilePage = () => {
         alert("Hubo un error al copiar la URL.");
       });
   };
-  
+
 
   return (
     <div
-    style={{
-      backgroundImage: `url(${backgroundUrl || background})`,
-      backgroundSize: "contain",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-      minHeight: "100vh"
-    }}
-    
->
+      style={{
+        backgroundImage: `url(${backgroundUrl || background})`,
+        backgroundSize: "contain",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        minHeight: "100vh"
+      }}
+
+    >
       {/* Meta datos */}
       <Helmet>
         <title>{profile ? `${profile.name} - Perfil` : "Cargando perfil..."}</title>
@@ -147,68 +189,133 @@ const ProfilePage = () => {
         </div>
       </nav>
 
-      
+
       {/* Perfil */}
       <main className="flex-1 flex flex-col items-center justify-center p-6">
-  <section className="max-w-sm w-full bg-gray-800 bg-opacity-90 rounded-lg p-6 shadow-lg text-center">
-    <img
-      className="profile-image"
-      src={profile?.imageUrl || "/default-profile.png"}
-      alt={profile?.name || "Usuario"}
-    />
-    <div className="profile-text">
-      <h2 className="text-lg text-gray-200 profile-name">{profile?.name}</h2>
-      <h3 className="text-lg text-gray-300 profile-title">{profile?.position}</h3>
-      {/* Íconos debajo del cargo */}
-      <div className="flex justify-center items-center mt-4" style={{ gap: '20px' }}>
-      {profile?.linkedInUrl && (
-        <a
-          href={profile.linkedInUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          title="LinkedIn"
-          className="text-white text-3xl hover:text-blue-400 transition"
-        >
-          <FaLinkedin />
-        </a>
-      )}
-  
-  {profile?.email  && (
-    <a
-      href={`mailto:${profile.email}`}
-      title="Mensaje de texto"
-      className="text-white text-3xl hover:text-yellow-300 transition"
-    >
-      <FiMail  />
-    </a>
-  )}
- {profile?.phoneNumber && (
-    <a
-      href={`tel:${profile.phoneNumber}`}
-      title="Llamar"
-      className="text-white text-3xl hover:text-green-400 transition"
-    >
-      <FiPhone />
-    </a>
-  )}
+        <section className="max-w-sm w-full bg-gray-800 bg-opacity-90 rounded-lg p-6 shadow-lg text-center">
+          <img
+            className="profile-image"
+            src={profile?.imageUrl || "/default-profile.png"}
+            alt={profile?.name || "Usuario"}
+          />
+          <div className="profile-text">
+            <h2 className="text-lg text-gray-200 profile-name">{profile?.name}</h2>
+            <h3 className="text-lg text-gray-300 profile-title">{profile?.position}</h3>
+            {/* Íconos debajo del cargo */}
+            <div className="flex justify-center items-center mt-4" style={{ gap: '20px' }}>
+              {profile?.linkedInUrl && (
+                <a
+                  href={profile.linkedInUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="LinkedIn"
+                  className="text-white text-3xl hover:text-blue-400 transition"
+                >
+                  <FaLinkedin />
+                </a>
+              )}
 
-{profile?.phoneNumber && (
-    <a
-      href={`https://wa.me/${profile.phoneNumber}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      title="WhatsApp"
-      className="text-white text-3xl hover:text-green-500 transition"
-    >
-      <FaWhatsapp />
-    </a>
-  )}
-</div>
+              {profile?.email && (
+                <a
+                  href={`mailto:${profile.email}`}
+                  title="Mensaje de texto"
+                  className="text-white text-3xl hover:text-yellow-300 transition"
+                >
+                  <FiMail />
+                </a>
+              )}
+              {profile?.phoneNumber && (
+                <a
+                  href={`tel:${profile.phoneNumber}`}
+                  title="Llamar"
+                  className="text-white text-3xl hover:text-green-400 transition"
+                >
+                  <FiPhone />
+                </a>
+              )}
 
-
+              {profile?.phoneNumber && (
+                <a
+                  href={`https://wa.me/${profile.phoneNumber}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="WhatsApp"
+                  className="text-white text-3xl hover:text-green-500 transition"
+                >
+                  <FaWhatsapp />
+                </a>
+              )}
+            </div>
 
 
-      <p className="profile-description mt-2">{profile?.description}</p>
+
+
+            <p className="profile-description mt-2">{profile?.description}</p>
+
+            {/* Botones debajo de la descripción */}
+            <div className="button-container mt-0">
+              <a href={profile?.websiteUrl} className="button" target="_blank" rel="noopener noreferrer">Pagina Web</a>
+              <a href={profile?.linkedInUrl} className="button" target="_blank" rel="noopener noreferrer">Linkedin Slin</a>
+              <a href={profile?.facebookUrl} className="button" target="_blank" rel="noopener noreferrer">Facebook</a>
+            </div>
+
+            {/* Muestra el código QR directamente aquí */}
+            {profileUrl && (
+              // <div className="qr-container">
+              //   <QRCodeCanvas value={profileUrl} size={100} className="qr-code" />
+              //   <p className="text-white mt-4">Escanea el código QR para acceder al perfil.</p>
+              // </div>
+
+              <div style={{ minWidth: '20%', marginTop: '-40px' }}>
+                <div>
+                  <canvas ref={qrcodeCanvasRef}></canvas>
+                </div>
+                <button className="image-button" onClick={addToGoogleWallet}>
+                  <img
+                    src="https://pe-userservices-dev.pwcglb.com/Content/Image/Profile/google.png"
+                    width="135"
+                    height="30"
+                    alt="Botón de Imagen"
+                  />
+                </button>
+                <button className="image-button" onClick={addToAppleWallet}>
+                  <img
+                    src="https://pe-userservices-dev.pwcglb.com/Content/Image/Profile/apple.png"
+                    width="135"
+                    height="30"
+                    alt="Botón de Imagen"
+                  />
+                </button>
+              </div>
+
+            )}
+
+            {/* 
+            <div style={{ minWidth: '20%', marginTop: '-40px' }}>
+              <div>
+                <canvas ref={QRCodeCanvas}></canvas>
+              </div>
+              <button className="image-button" onClick={addToGoogleWallet}>
+                <img
+                  src="https://pe-userservices-dev.pwcglb.com/Content/Image/Profile/google.png"
+                  width="135"
+                  height="30"
+                  alt="Botón de Imagen"
+                />
+              </button>
+              <button className="image-button" onClick={addToAppleWallet}>
+                <img
+                  src="https://pe-userservices-dev.pwcglb.com/Content/Image/Profile/apple.png"
+                  width="135"
+                  height="30"
+                  alt="Botón de Imagen"
+                />
+              </button>
+            </div> */}
+
+          </div>
+        </section>
+      </main>
 
       {/* Botones debajo de la descripción */}
       <div className="button-container mt-2">
@@ -217,20 +324,8 @@ const ProfilePage = () => {
         <a href={profile?.facebookUrl} className="button" target="_blank" rel="noopener noreferrer">Facebook</a>
       </div>
 
-      {/* Muestra el código QR directamente aquí */}
-      {profileUrl && (
-        <div className="qr-container">
-          <QRCodeCanvas value={profileUrl} size={100} className="qr-code" />
-          <p className="text-white mt-4">Escanea el código QR para acceder al perfil.</p>
-        </div>
-      )}
     </div>
-  </section>
-</main>
 
-      
-    </div>
-    
   );
 };
 
