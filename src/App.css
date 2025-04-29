@@ -23,6 +23,31 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.wallet-buttons {
+  display: flex;
+  justify-content: center; /* Centra los botones horizontalmente */
+  gap: 20px; /* Espacio entre los botones */
+  flex-wrap: wrap; /* Permite que los botones se ajusten en pantallas pequeñas */
+}
+
+.wallet-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.wallet-button img {
+  display: block;
+  max-width: 280px; /* Máximo ancho para las imágenes */
+  height: auto;
+}
+
+/* Efecto hover para los botones */
+.wallet-button:hover {
+  transform: scale(1.05);
+}
 
 .App-link {
   color: #61dafb;

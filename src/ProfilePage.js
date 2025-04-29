@@ -30,11 +30,11 @@ const ProfilePage = () => {
   const generateQRCode = () => {
     if (!profile) return;
 
-    const vCard = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:SLIN\nTITLE:${profile.position}\nTEL:${profile.phoneNumber}\nEMAIL:${profile.email}\nURL:${profile.websiteUrl}\nURL:http://localhost:3000/profile/3\nEND:VCARD`;
+    const vCard = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:SLIN\nTITLE:${profile.position}\nTEL:${profile.phoneNumber}\nEMAIL:${profile.email}\nURL:${profile.websiteUrl}\nEND:VCARD`;
 
     const canvas = qrcodeCanvasRef.current;
 
-    QRCode.toCanvas(canvas, vCard, { errorCorrectionLevel: 'H' }, (error) => {
+    QRCode.toCanvas(canvas, vCard, { errorCorrectionLevel: 'H' , width: 200 }, (error) => {
       if (error) {
         console.error(error);
       } else {
@@ -266,26 +266,20 @@ const ProfilePage = () => {
               //   <p className="text-white mt-4">Escanea el código QR para acceder al perfil.</p>
               // </div>
 
-              <div style={{ minWidth: '20%', marginTop: '-40px' }}>
+              <div style={{ minWidth: '20%', marginTop: '10px' }}>
                 <div>
-                  <canvas ref={qrcodeCanvasRef}></canvas>
+                  <canvas ref={qrcodeCanvasRef} style={{ width: '30px', height: '30x' }} ></canvas>
+
                 </div>
-                <button className="image-button" onClick={addToGoogleWallet}>
-                  <img
-                    src="https://pe-userservices-dev.pwcglb.com/Content/Image/Profile/google.png"
-                    width="135"
-                    height="30"
-                    alt="Botón de Imagen"
-                  />
-                </button>
-                <button className="image-button" onClick={addToAppleWallet}>
-                  <img
-                    src="https://pe-userservices-dev.pwcglb.com/Content/Image/Profile/apple.png"
-                    width="135"
-                    height="30"
-                    alt="Botón de Imagen"
-                  />
-                </button>
+                <div className="wallet-buttons">
+                  <button className="wallet-button" onClick={addToGoogleWallet}>
+                    <img src="/google-wallet.svg" width="280" height="60" alt="Google Wallet" />
+                  </button>
+
+                  <button className="wallet-button" onClick={addToAppleWallet}>
+                    <img src="/apple-logo-esp.svg" width="280" height="60" alt="Apple Wallet" />
+                  </button>
+                </div>
               </div>
 
             )}
@@ -318,11 +312,11 @@ const ProfilePage = () => {
       </main>
 
       {/* Botones debajo de la descripción */}
-      <div className="button-container mt-2">
+      {/* <div className="button-container mt-2">
         <a href={profile?.websiteUrl} className="button" target="_blank" rel="noopener noreferrer">Pagina Web</a>
         <a href={profile?.linkedInUrl} className="button" target="_blank" rel="noopener noreferrer">Linkedin Slin</a>
         <a href={profile?.facebookUrl} className="button" target="_blank" rel="noopener noreferrer">Facebook</a>
-      </div>
+      </div> */}
 
     </div>
 

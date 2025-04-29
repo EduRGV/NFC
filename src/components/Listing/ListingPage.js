@@ -1,7 +1,6 @@
 // src/components/Listing/ListingPage.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserService } from '../../services/UserService';
 import { Modal, Button, Spinner, Alert } from 'react-bootstrap';
 import { ProfileService } from '../../services/ProfileServices';
 

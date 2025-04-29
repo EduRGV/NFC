@@ -1,4 +1,4 @@
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl = "http://54.242.76.106:5000/api";
 export const WalletService = {
     async createGooglePass(profile) {
       const response = await fetch(`${baseUrl}/Billetera/google` , {
@@ -12,13 +12,17 @@ export const WalletService = {
       return await response.text();
     },
     async createApplePass(profile) {
-      const response = await fetch(`${baseUrl}/Billetera/apple`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(profile)
-      });
+      try {
+        const response = await fetch(`${baseUrl}/Billetera/apple`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(profile)
+        });
+      } catch (error) {
+        console.log(error,"error")
+      }
 
       console.log("response", response)
 
