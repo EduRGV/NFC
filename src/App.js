@@ -16,7 +16,6 @@ const App = () => {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-
         <Route path="/profile/:id" element={<ProfilePage />} />
 
         {/* Rutas con Sidebar */}

@@ -114,47 +114,48 @@ const ListingPage = () => {
         <table className="table table-striped table-hover">
           <thead className="table-dark">
             <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Email</th>
-              <th>Posicion</th>
-              <th>Numero</th>
-              <th>Acciones</th>
-
+              <th className="text-center">ID</th>
+              <th className="text-center">Nombre</th>
+              <th className="text-center">Email</th>
+              <th className="text-center">Posicion</th>
+              <th className="text-center">Numero</th>
+              <th className="text-center">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {users.map(user => (
               <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.position}</td>
-                <td>{user.phoneNumber}</td>
-                <td>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => navigate(`/profile/${user.id}`)}
+                <td className="text-center">{user.id}</td>
+                <td className="text-center">{user.name}</td>
+                <td className="text-center">{user.email}</td>
+                <td className="text-center">{user.position}</td>
+                <td className="text-center">{user.phoneNumber}</td>
+                <td className="text-center">
+                  <div className="d-flex justify-content-center gap-2">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={() => navigate(`/profile/${user.id}`)}
                     >
-                    Ver perfil
-                  </Button>
+                      Ver perfil
+                    </Button>
 
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
-                    onClick={() => handleEdit(user)}
-                    className="me-2"
-                  >
-                    <i className="bi bi-pencil"></i> Editar
-                  </Button>
-                  <Button
-                    variant="outline-danger"
-                    size="sm"
-                    onClick={() => handleDelete(user)}
-                  >
-                    <i className="bi bi-trash"></i> Eliminar
-                  </Button>
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      onClick={() => handleEdit(user)}
+                    >
+                      <i className="bi bi-pencil"></i> Editar
+                    </Button>
+
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      onClick={() => handleDelete(user)}
+                    >
+                      <i className="bi bi-trash"></i> Eliminar
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}

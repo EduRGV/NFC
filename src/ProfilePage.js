@@ -34,7 +34,7 @@ const ProfilePage = () => {
 
     const canvas = qrcodeCanvasRef.current;
 
-    QRCode.toCanvas(canvas, vCard, { errorCorrectionLevel: 'H' , width: 200 }, (error) => {
+    QRCode.toCanvas(canvas, vCard, { errorCorrectionLevel: 'H', width: 200 }, (error) => {
       if (error) {
         console.error(error);
       } else {
@@ -47,6 +47,9 @@ const ProfilePage = () => {
     const fetchProfile = async () => {
       try {
         const response = await fetch(`${baseUrl}/Profile/${id}`);
+
+        console.log("response", response);
+
         if (!response.ok) throw new Error("Perfil no encontrado");
 
         const data = await response.json();
@@ -90,7 +93,7 @@ const ProfilePage = () => {
     try {
       let jwt = await WalletService.createGooglePass(profile); // ahora sí es el string correcto
       console.log("jwt", jwt);
-  
+
       // Abre el link en una nueva pestaña
       const link = document.createElement('a');
       link.href = `${jwt}`;
@@ -142,181 +145,139 @@ const ProfilePage = () => {
 
   return (
     <div
+      className="min-vh-100 d-flex flex-column"
       style={{
         backgroundImage: `url(${backgroundUrl || background})`,
-        backgroundSize: "contain",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh"
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
       }}
-
     >
-      {/* Meta datos */}
       <Helmet>
-        <title>{profile ? `${profile.name} - Perfil` : "Cargando perfil..."}</title>
-        <meta name="description" content={profile ? `Perfil de ${profile.name}, ${profile.position}.` : "Cargando perfil..."} />
-        <meta property="og:title" content={profile ? `${profile.name} - Perfil` : "Perfil"} />
-        <meta property="og:description" content={profile ? `Información sobre ${profile.name}.` : "Perfil de usuario"} />
-        <meta property="og:image" content={profile?.imageUrl || "/default-profile.png"} />
+        <title>{profile ? `${profile.name} - Perfil` : 'Cargando perfil...'}</title>
+        <meta name="description" content={profile ? `Perfil de ${profile.name}, ${profile.position}.` : 'Cargando perfil...'} />
+        <meta property="og:title" content={profile ? `${profile.name} - Perfil` : 'Perfil'} />
+        <meta property="og:description" content={profile ? `Información sobre ${profile.name}.` : 'Perfil de usuario'} />
+        <meta property="og:image" content={profile?.imageUrl || '/default-profile.png'} />
         <meta property="og:type" content="profile" />
       </Helmet>
 
-     {/* Menú Superior */}
-     <nav className="menu-superior flex items-center justify-between h-16 px-4 w-full">
-        <img className="h-10" src={logo} alt="Logo" />
-        
-        {/* Menú en dispositivos grandes */}
-        <div className="menu">
-          <button className="btn" onClick={handleCopyLink}>Link</button>
-          <button className="btn">Instalar</button>
-          <button className="btn" onClick={handleAddContact}>Agregar</button>
-          <button className="btn" onClick={handleShare}>Compartir</button>
-        </div>
-
-        {/* Menú Hamburguesa */}
-        <div className="menu-hamburguesa">
-          <button onClick={toggleMenu} className="btn">
-            ☰
-          </button>
-          {menuOpen && (
-            <ul>
-              <li><button className="btn" onClick={handleCopyLink}>Link</button></li>
-              <li><button className="btn">Instalar</button></li>
-              <li><button className="btn" onClick={handleAddContact}>Agregar</button></li>
-              <li><button className="btn" onClick={handleShare}>Compartir</button></li>
-            </ul>
-          )}
+      <nav className="navbar navbar-expand-lg navbar-light bg-white px-3">
+        <img src={logo} alt="Logo" style={{ height: '40px' }} />
+        <button className="navbar-toggler" type="button" onClick={toggleMenu}>
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className={`collapse navbar-collapse ${menuOpen ? 'show' : ''}`}>
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item"><button className="btn text-black" onClick={handleCopyLink}>Link</button></li>
+            <li className="nav-item"><button className="btn text-black">Instalar</button></li>
+            <li className="nav-item"><button className="btn text-black" onClick={handleAddContact}>Agregar</button></li>
+            <li className="nav-item"><button className="btn text-black" onClick={handleShare}>Compartir</button></li>
+          </ul>
         </div>
       </nav>
 
+      <main className="flex-grow-1 d-flex justify-content-center align-items-center py-5">
+        <section className="bg-dark bg-opacity-75 text-white rounded-4 p-4 shadow w-100" style={{ maxWidth: '500px' }}>
+          <div className="text-center">
+            <img
+              src={profile?.imageUrl || '/default-profile.png'}
+              alt={profile?.name || 'Usuario'}
+              className="rounded-circle mb-3"
+              style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+            />
+            <h2>{profile?.name}</h2>
+            <h4>{profile?.position}</h4>
 
-      {/* Perfil */}
-      <main className="flex-1 flex flex-col items-center justify-center p-6">
-        <section className="max-w-sm w-full bg-gray-800 bg-opacity-90 rounded-lg p-6 shadow-lg text-center">
-          <img
-            className="profile-image"
-            src={profile?.imageUrl || "/default-profile.png"}
-            alt={profile?.name || "Usuario"}
-          />
-          <div className="profile-text">
-            <h2 className="text-lg text-gray-200 profile-name">{profile?.name}</h2>
-            <h3 className="text-lg text-gray-300 profile-title">{profile?.position}</h3>
-            {/* Íconos debajo del cargo */}
-            <div className="flex justify-center items-center mt-4" style={{ gap: '20px' }}>
+            <div className="d-flex justify-content-center gap-3 my-3 flex-wrap">
               {profile?.linkedInUrl && (
-                <a
-                  href={profile.linkedInUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="LinkedIn"
-                  className="text-white text-3xl hover:text-blue-400 transition"
-                >
+                <a href={profile.linkedInUrl} target="_blank" rel="noopener noreferrer" className="text-white fs-4">
                   <FaLinkedin />
                 </a>
               )}
-
               {profile?.email && (
-                <a
-                  href={`mailto:${profile.email}`}
-                  title="Mensaje de texto"
-                  className="text-white text-3xl hover:text-yellow-300 transition"
-                >
+                <a href={`mailto:${profile.email}`} className="text-white fs-4">
                   <FiMail />
                 </a>
               )}
               {profile?.phoneNumber && (
-                <a
-                  href={`tel:${profile.phoneNumber}`}
-                  title="Llamar"
-                  className="text-white text-3xl hover:text-green-400 transition"
-                >
-                  <FiPhone />
+                <>
+                  <a href={`tel:${profile.phoneNumber}`} className="text-white fs-4">
+                    <FiPhone />
+                  </a>
+                  <a href={`https://wa.me/${profile.phoneNumber}`} target="_blank" rel="noopener noreferrer" className="text-white fs-4">
+                    <FaWhatsapp />
+                  </a>
+                </>
+              )}
+            </div>
+
+            <p>{profile?.description}</p>
+
+            {/* BOTONES EN FILA */}
+            <div className="d-flex justify-content-center gap-3 my-3 flex-wrap">
+              {profile?.websiteUrl && (
+                <a href={profile.websiteUrl} className="btn btn-success" target="_blank" rel="noopener noreferrer">
+                  Página Web
                 </a>
               )}
-
-              {profile?.phoneNumber && (
-                <a
-                  href={`https://wa.me/${profile.phoneNumber}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="WhatsApp"
-                  className="text-white text-3xl hover:text-green-500 transition"
-                >
-                  <FaWhatsapp />
+              {profile?.linkedInUrl && (
+                <a href={profile.linkedInUrl} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                  LinkedIn
+                </a>
+              )}
+              {profile?.facebookUrl && (
+                <a href={profile.facebookUrl} className="btn btn-secondary text-white" target="_blank" rel="noopener noreferrer">
+                  Facebook
                 </a>
               )}
             </div>
 
-
-
-
-            <p className="profile-description mt-2">{profile?.description}</p>
-
-            {/* Botones debajo de la descripción */}
-            <div className="button-container mt-0">
-              <a href={profile?.websiteUrl} className="button" target="_blank" rel="noopener noreferrer">Pagina Web</a>
-              <a href={profile?.linkedInUrl} className="button" target="_blank" rel="noopener noreferrer">Linkedin Slin</a>
-              <a href={profile?.facebookUrl} className="button" target="_blank" rel="noopener noreferrer">Facebook</a>
-            </div>
-
-            {/* Muestra el código QR directamente aquí */}
             {profileUrl && (
-              // <div className="qr-container">
-              //   <QRCodeCanvas value={profileUrl} size={100} className="qr-code" />
-              //   <p className="text-white mt-4">Escanea el código QR para acceder al perfil.</p>
-              // </div>
+              <div className="mt-4">
+                <canvas ref={qrcodeCanvasRef} style={{ width: '100px', height: '100px' }}></canvas>
 
-              <div style={{ minWidth: '20%', marginTop: '10px' }}>
-                <div>
-                  <canvas ref={qrcodeCanvasRef} style={{ width: '30px', height: '30x' }} ></canvas>
-
-                </div>
-                <div className="wallet-buttons">
-                  <button className="wallet-button" onClick={addToGoogleWallet}>
-                    <img src="/google-wallet.svg" width="280" height="60" alt="Google Wallet" />
+                {/* BOTONES WALLET EN FILA */}
+                <div className="d-flex justify-content-center gap-2 mt-4 flex-wrap">
+                  <button
+                    onClick={addToGoogleWallet}
+                    className="wallet-btn border-0 bg-transparent p-0"
+                    style={{ width: '220px', height: '60px' }}
+                  >
+                    <img
+                      src="/google.svg"
+                      alt="Google Wallet"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        backgroundColor: 'transparent',
+                      }}
+                    />
                   </button>
 
-                  <button className="wallet-button" onClick={addToAppleWallet}>
-                    <img src="/apple-logo-esp.svg" width="280" height="60" alt="Apple Wallet" />
+                  <button
+                    onClick={addToAppleWallet}
+                    className="wallet-btn border-0 bg-transparent p-0"
+                    style={{ width: '220px', height: '60px' }}
+                  >
+                    <img
+                      src="/apple-logo-esp.svg"
+                      alt="Apple Wallet"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        backgroundColor: 'transparent',
+                      }}
+                    />
                   </button>
                 </div>
               </div>
-
             )}
-
-            {/* 
-            <div style={{ minWidth: '20%', marginTop: '-40px' }}>
-              <div>
-                <canvas ref={QRCodeCanvas}></canvas>
-              </div>
-              <button className="image-button" onClick={addToGoogleWallet}>
-                <img
-                  src="https://pe-userservices-dev.pwcglb.com/Content/Image/Profile/google.png"
-                  width="135"
-                  height="30"
-                  alt="Botón de Imagen"
-                />
-              </button>
-              <button className="image-button" onClick={addToAppleWallet}>
-                <img
-                  src="https://pe-userservices-dev.pwcglb.com/Content/Image/Profile/apple.png"
-                  width="135"
-                  height="30"
-                  alt="Botón de Imagen"
-                />
-              </button>
-            </div> */}
-
           </div>
         </section>
       </main>
-
-      {/* Botones debajo de la descripción */}
-      {/* <div className="button-container mt-2">
-        <a href={profile?.websiteUrl} className="button" target="_blank" rel="noopener noreferrer">Pagina Web</a>
-        <a href={profile?.linkedInUrl} className="button" target="_blank" rel="noopener noreferrer">Linkedin Slin</a>
-        <a href={profile?.facebookUrl} className="button" target="_blank" rel="noopener noreferrer">Facebook</a>
-      </div> */}
 
     </div>
 

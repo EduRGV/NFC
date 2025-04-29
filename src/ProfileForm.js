@@ -6,6 +6,7 @@ const ProfileForm = ({ onSubmit }) => {
     posicion: "",
     descripcion: "",
     imagen: null,
+    ProfileImagePreview: null,
     backgroundImage: null,
     backgroundImagePreview: null,
     websiteUrl: "",
@@ -21,7 +22,22 @@ const ProfileForm = ({ onSubmit }) => {
   };
 
   const handleImageChange = (e) => {
-    setFormData({ ...formData, imagen: e.target.files[0] });
+
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prevData) => ({
+          ...prevData,
+          imagen: file,
+          ProfileImagePreview: reader.result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setFormData({ ...formData, imagen: null, ProfileImagePreview: null });
+    }
+
   };
 
   const handleBackgroundImageChange = (e) => {
@@ -43,8 +59,8 @@ const ProfileForm = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData); 
-    onSubmit(formData); 
+    console.log(formData);
+    onSubmit(formData);
   };
 
   return (
@@ -67,6 +83,25 @@ const ProfileForm = ({ onSubmit }) => {
           <label className="form-label">Seleccionar Imagen de Perfil</label>
           <input type="file" className="form-control" accept="image/*" onChange={handleImageChange} />
         </div>
+
+        {formData.ProfileImagePreview && (
+          <div className="mb-3 text-center">
+            <label className="form-label">Vista previa de la foto de perfil:</label><br />
+            <img
+              src={formData.ProfileImagePreview}
+              alt="Profile Preview"
+              style={{
+                width: '120px',
+                height: '120px',
+                objectFit: 'cover',
+                borderRadius: '50%',
+                border: '2px solid #ccc',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
+              }}
+            />
+          </div>
+        )}
+
         <div className="mb-3">
           <label className="form-label">Imagen de Fondo</label>
           <input type="file" className="form-control" accept="image/*" onChange={handleBackgroundImageChange} />
